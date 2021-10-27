@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+         Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="0.7.2" last-position="0,0" last-zoom="1">
+<database name="new_database">
+</database>
+
+<schema name="public" protected="true" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<table name="clientes">
+	<schema name="public"/>
+	<position x="183" y="96"/>
+	<column name="Id_cliente" not-null="true">
+		<type name="integer"/>
+	</column>
+	<column name="Nombre_cliente" not-null="true">
+		<type name="character varying" length="30"/>
+	</column>
+	<column name="Estado" not-null="true">
+		<type name="character varying" length="20"/>
+	</column>
+	<constraint name="Id_cliente_claveprimaria" type="pk-constr" factor="100" table="public.clientes">
+		<columns names="Id_cliente" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="Articulos">
+	<schema name="public"/>
+	<position x="520" y="97"/>
+	<column name="Num_art" not-null="true">
+		<type name="integer"/>
+	</column>
+	<column name="Nom_art" not-null="true">
+		<type name="character varying" length="30"/>
+	</column>
+	<column name="Precio" not-null="true">
+		<type name="double precision"/>
+	</column>
+	<constraint name="Num_art" type="pk-constr" factor="100" table="public.&quot;Articulos&quot;">
+		<columns names="Num_art" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="Detalle_factura">
+	<schema name="public"/>
+	<position x="609" y="337"/>
+	<column name="Id_detalle" not-null="true">
+		<type name="integer"/>
+	</column>
+	<column name="Cant" not-null="true">
+		<type name="integer"/>
+	</column>
+	<column name="Id_orden" not-null="true">
+		<type name="integer"/>
+	</column>
+	<column name="Num_art" not-null="true">
+		<type name="integer"/>
+	</column>
+	<constraint name="Id_detalle_clave_primaria" type="pk-constr" factor="100" table="public.&quot;Detalle_factura&quot;">
+		<columns names="Id_detalle" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="Ordenes">
+	<schema name="public"/>
+	<position x="221" y="333"/>
+	<column name="Id_orden" not-null="true">
+		<type name="integer"/>
+	</column>
+	<column name="Fecha" not-null="true">
+		<type name="date"/>
+	</column>
+	<column name="Id_cliente" not-null="true">
+		<type name="integer"/>
+	</column>
+	<constraint name="Id_orden_claveprimaria" type="pk-constr" factor="100" table="public.&quot;Ordenes&quot;">
+		<columns names="Id_orden" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<constraint name="Id_orden_claveforanea" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.&quot;Ordenes&quot;" table="public.&quot;Detalle_factura&quot;">
+	<columns names="Id_orden" ref-type="src-columns"/>
+	<columns names="Id_orden" ref-type="dst-columns"/>
+</constraint>
+<constraint name="Num_art_claveforanea" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.&quot;Articulos&quot;" table="public.&quot;Detalle_factura&quot;">
+	<columns names="Num_art" ref-type="src-columns"/>
+	<columns names="Num_art" ref-type="dst-columns"/>
+</constraint>
+<constraint name="Id_cliente_claveforanea" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.clientes" table="public.&quot;Ordenes&quot;">
+	<columns names="Id_cliente" ref-type="src-columns"/>
+	<columns names="Id_cliente" ref-type="dst-columns"/>
+</constraint>
+<relationship name="&quot;rel_Ordenes_clientes&quot;" type="relfk"
+	 src-table="public.&quot;Ordenes&quot;"
+	 dst-table="public.clientes"
+	 src-required="true" dst-required="true"/>
+
+<relationship name="&quot;rel_Detalle_factura_Ordenes&quot;" type="relfk"
+	 src-table="public.&quot;Detalle_factura&quot;"
+	 dst-table="public.&quot;Ordenes&quot;"
+	 src-required="true" dst-required="true"/>
+
+<relationship name="&quot;rel_Detalle_factura_Articulos&quot;" type="relfk"
+	 src-table="public.&quot;Detalle_factura&quot;"
+	 dst-table="public.&quot;Articulos&quot;"
+	 src-required="true" dst-required="true"/>
+
+</dbmodel>

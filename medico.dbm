@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+         Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="0.7.2" last-position="0,0" last-zoom="1">
+<database name="new_database">
+</database>
+
+<schema name="public" protected="true" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<table name="medico">
+	<schema name="public"/>
+	<position x="517" y="17"/>
+	<column name="Id_cedulamedico" not-null="true">
+		<type name="character varying" length="30"/>
+	</column>
+	<column name="Nombres" not-null="true">
+		<type name="character varying" length="30"/>
+	</column>
+	<column name="Especialidad" not-null="true">
+		<type name="character varying" length="30"/>
+	</column>
+	<column name="Apellidos" not-null="true">
+		<type name="character varying" length="30"/>
+	</column>
+	<column name="telefono" not-null="true">
+		<type name="integer"/>
+	</column>
+	<constraint name="Id_cedula_claveprimaria" type="pk-constr" factor="100" table="public.medico">
+		<columns names="Id_cedulamedico" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="Cita">
+	<schema name="public"/>
+	<position x="102" y="248"/>
+	<column name="Id_codigo" not-null="true">
+		<type name="integer"/>
+	</column>
+	<column name="Fecha" not-null="true">
+		<type name="date"/>
+	</column>
+	<column name="Hora" not-null="true">
+		<type name="time"/>
+	</column>
+	<column name="c_paciente" not-null="true">
+		<type name="character varying" length="30"/>
+	</column>
+	<column name="c_medico" not-null="true">
+		<type name="character varying" length="30"/>
+	</column>
+	<constraint name="Id_codigo_claveprimaria" type="pk-constr" factor="100" table="public.&quot;Cita&quot;">
+		<columns names="Id_codigo" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="Paciente">
+	<schema name="public"/>
+	<position x="105" y="15"/>
+	<column name="Id_cedulapaciente" not-null="true">
+		<type name="character varying" length="30"/>
+	</column>
+	<column name="Nombres" not-null="true">
+		<type name="character varying" length="20"/>
+	</column>
+	<column name="Telefono" not-null="true">
+		<type name="integer"/>
+	</column>
+	<column name="Direccion" not-null="true">
+		<type name="character varying" length="30"/>
+	</column>
+	<column name="Apellidos" not-null="true">
+		<type name="character varying" length="20"/>
+	</column>
+	<constraint name="Id_cedula_claveprimaria" type="pk-constr" factor="100" table="public.&quot;Paciente&quot;">
+		<columns names="Id_cedulapaciente" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="Especialidad">
+	<schema name="public"/>
+	<position x="318" y="448"/>
+	<column name="Id_especialidad" not-null="true">
+		<type name="character varying" length="30"/>
+	</column>
+	<column name="Nombre" not-null="true">
+		<type name="character varying" length="30"/>
+	</column>
+	<constraint name="especialidad" type="pk-constr" factor="100" table="public.&quot;Especialidad&quot;">
+		<columns names="Id_especialidad" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="Especialidad_medico">
+	<schema name="public"/>
+	<position x="500" y="235"/>
+	<column name="Id_esp" not-null="true">
+		<type name="integer" length="10"/>
+	</column>
+	<column name="horasinicio" not-null="true">
+		<type name="time"/>
+	</column>
+	<column name="horasfin" not-null="true">
+		<type name="time"/>
+	</column>
+	<column name="cd_identidadmedico" not-null="true">
+		<type name="character varying" length="10"/>
+	</column>
+	<constraint name="Id_especialidad" type="pk-constr" factor="100" table="public.&quot;Especialidad_medico&quot;">
+		<columns names="Id_esp" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<constraint name="frc_id_em" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.&quot;Especialidad_medico&quot;" table="public.&quot;Cita&quot;">
+	<columns names="Id_codigo" ref-type="src-columns"/>
+	<columns names="Id_esp" ref-type="dst-columns"/>
+</constraint>
+<constraint name="frc_cd_paciente" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.&quot;Paciente&quot;" table="public.&quot;Cita&quot;">
+	<columns names="c_paciente" ref-type="src-columns"/>
+	<columns names="Id_cedulapaciente" ref-type="dst-columns"/>
+</constraint>
+<constraint name="frc_cl_medico" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.medico" table="public.&quot;Especialidad_medico&quot;">
+	<columns names="cd_identidadmedico" ref-type="src-columns"/>
+	<columns names="Id_cedulamedico" ref-type="dst-columns"/>
+</constraint>
+<constraint name="frc_idespecialidad" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.&quot;Especialidad&quot;" table="public.&quot;Especialidad_medico&quot;">
+	<columns names="Id_esp" ref-type="src-columns"/>
+	<columns names="Id_especialidad" ref-type="dst-columns"/>
+</constraint>
+<relationship name="&quot;rel_Especialidad_medico_medico&quot;" type="relfk"
+	 src-table="public.&quot;Especialidad_medico&quot;"
+	 dst-table="public.medico"
+	 src-required="true" dst-required="true"/>
+
+<relationship name="&quot;rel_Especialidad_medico_Especialidad&quot;" type="relfk"
+	 src-table="public.&quot;Especialidad_medico&quot;"
+	 dst-table="public.&quot;Especialidad&quot;"
+	 src-required="true" dst-required="true"/>
+
+<relationship name="&quot;rel_Cita_Especialidad_medico&quot;" type="relfk"
+	 src-table="public.&quot;Cita&quot;"
+	 dst-table="public.&quot;Especialidad_medico&quot;"
+	 src-required="true" dst-required="true"/>
+
+<relationship name="&quot;rel_Cita_Paciente&quot;" type="relfk"
+	 src-table="public.&quot;Cita&quot;"
+	 dst-table="public.&quot;Paciente&quot;"
+	 src-required="true" dst-required="true"/>
+
+</dbmodel>
